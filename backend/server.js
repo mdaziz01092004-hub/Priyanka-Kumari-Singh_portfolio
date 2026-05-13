@@ -112,6 +112,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend API server running gracefully on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Backend API server running gracefully on port ${PORT}`);
+  });
+}
+
+export default app;
