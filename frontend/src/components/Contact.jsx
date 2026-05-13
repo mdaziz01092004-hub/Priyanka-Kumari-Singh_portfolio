@@ -28,22 +28,32 @@ const Contact = () => {
 
     try {
       // Dynamically target local backend server or Vercel serverless web service routing
-      const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-        ? 'http://localhost:5000/api/contact' 
-        : '/api/contact';
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      let response;
+      let data;
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      try {
+        // Primary attempt: use direct URL if local, or relative path if deployed
+        const primaryUrl = isLocal ? 'http://localhost:5000/api/contact' : '/api/contact';
+        response = await fetch(primaryUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        data = await response.json();
+      } catch (err) {
+        // Fallback attempt: if direct connection fails (e.g. mobile IP test), fallback to relative proxy path
+        console.warn('Primary fetch route encountered network delay, falling back to relative proxy path...', err);
+        response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        data = await response.json();
+      }
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit form. Please verify your connection.');
+      if (!response || !response.ok) {
+        throw new Error((data && data.error) || 'Failed to submit form. Please verify your connection.');
       }
 
       // Success toast feedback state
@@ -68,15 +78,14 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-literary-100/30 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="pt-28 pb-20 bg-literary-100/30 relative min-h-[calc(100vh-160px)] flex items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-3xl sm:text-4xl font-serif font-bold text-ink mb-4"
           >
@@ -94,8 +103,7 @@ const Contact = () => {
           {/* Reference Column Left */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-5 bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-literary-200 shadow-sm flex flex-col justify-between"
           >
@@ -165,8 +173,7 @@ const Contact = () => {
           {/* Form Column Right */}
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="lg:col-span-7 bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-literary-200 shadow-sm"
           >

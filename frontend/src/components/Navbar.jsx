@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { Menu, X, BookOpen } from 'lucide-react';
 
 const Navbar = () => {
@@ -18,27 +19,11 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About & Education', href: '#education' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', path: '/' },
+    { name: 'About & Education', path: '/about' },
+    { name: 'Skills', path: '/skills' },
+    { name: 'Contact', path: '/contact' },
   ];
-
-  const scrollToSection = (e, href) => {
-    e.preventDefault();
-    setIsOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      const navHeight = 80; // approximate navbar height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   return (
     <nav
@@ -51,37 +36,47 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Brand Logo */}
-          <a
-            href="#home"
-            onClick={(e) => scrollToSection(e, '#home')}
+          <Link
+            to="/"
+            onClick={() => setIsOpen(false)}
             className="flex items-center gap-2 text-ink hover:opacity-80 transition-opacity"
           >
             <BookOpen className="w-6 h-6 text-literary-600" />
             <span className="font-serif font-bold text-xl sm:text-2xl tracking-wide">
               Priyanka<span className="text-literary-500 text-3xl leading-none">.</span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.name}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className="text-sm font-medium text-ink-muted hover:text-literary-600 transition-colors relative py-1 group"
+                to={link.path}
+                className={({ isActive }) =>
+                  `text-sm font-medium transition-colors relative py-1 group ${
+                    isActive ? 'text-literary-600 font-bold' : 'text-ink-muted hover:text-literary-600'
+                  }`
+                }
               >
-                {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-literary-500 transition-all duration-300 group-hover:w-full"></span>
-              </a>
+                {({ isActive }) => (
+                  <>
+                    {link.name}
+                    <span
+                      className={`absolute bottom-0 left-0 h-0.5 bg-literary-500 transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}
+                    ></span>
+                  </>
+                )}
+              </NavLink>
             ))}
-            <a
-              href="#contact"
-              onClick={(e) => scrollToSection(e, '#contact')}
+            <Link
+              to="/contact"
               className="px-4 py-2 rounded-full text-xs font-semibold bg-literary-600 text-literary-50 hover:bg-literary-700 transition-all duration-300 shadow-sm hover:shadow"
             >
               Let's Connect
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -106,14 +101,18 @@ const Navbar = () => {
       >
         <div className="flex flex-col gap-3 px-6">
           {navLinks.map((link) => (
-            <a
+            <NavLink
               key={link.name}
-              href={link.href}
-              onClick={(e) => scrollToSection(e, link.href)}
-              className="text-base font-medium text-ink hover:text-literary-600 transition-colors py-2 border-b border-literary-100 last:border-none"
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `text-base font-medium transition-colors py-2 border-b border-literary-100 last:border-none ${
+                  isActive ? 'text-literary-600 font-bold' : 'text-ink hover:text-literary-600'
+                }`
+              }
             >
               {link.name}
-            </a>
+            </NavLink>
           ))}
         </div>
       </div>

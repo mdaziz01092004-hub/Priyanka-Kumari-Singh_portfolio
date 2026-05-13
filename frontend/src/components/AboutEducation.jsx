@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { GraduationCap, Calendar, Award, BookMarked } from 'lucide-react';
+import { GraduationCap, Calendar, Award, BookMarked, BookOpen, Compass, Feather } from 'lucide-react';
 
 const AboutEducation = () => {
   const educationData = [
@@ -29,16 +29,33 @@ const AboutEducation = () => {
     },
   ];
 
+  const coreFocusThemes = [
+    {
+      title: "British Romanticism & Victorian Prose",
+      description: "Analyzing aesthetic evolutions, nature motifs, and socio-industrial responses in 19th-century textual frameworks.",
+      icon: Feather
+    },
+    {
+      title: "Post-Colonial Literature & Theory",
+      description: "Studying cultural identity, linguistic agency, and subaltern narratives across global English-speaking perspectives.",
+      icon: Compass
+    },
+    {
+      title: "Advanced Rhetoric & Linguistics",
+      description: "Deconstructing syntactical arrangements, stylistic devices, and persuasive writing paradigms to hone clear documentation skills.",
+      icon: BookOpen
+    }
+  ];
+
   return (
-    <section id="education" className="py-20 bg-literary-100/50 relative">
+    <section id="education" className="pt-28 pb-20 bg-literary-100/50 relative min-h-[calc(100vh-160px)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-3xl sm:text-4xl font-serif font-bold text-ink mb-4"
           >
@@ -56,8 +73,7 @@ const AboutEducation = () => {
           {/* Left Column: Personal Context Card */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-5 bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-literary-200 shadow-sm"
           >
@@ -160,6 +176,40 @@ const AboutEducation = () => {
 
           </div>
 
+        </div>
+
+        {/* Added More Info Core Themes Section */}
+        <div className="mt-16 pt-12 border-t border-literary-200/60">
+          <div className="text-center mb-10">
+            <h3 className="text-xs uppercase tracking-widest font-bold text-literary-500 mb-1">Academic Deep Dive</h3>
+            <h4 className="text-xl font-serif text-ink">Core Literary Focus Themes</h4>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {coreFocusThemes.map((theme, idx) => {
+              const ThemeIcon = theme.icon;
+              return (
+                <motion.div
+                  key={theme.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15, duration: 0.5 }}
+                  className="bg-white/60 p-6 rounded-2xl border border-literary-200 shadow-2xs hover:bg-white/90 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-literary-100 flex items-center justify-center text-literary-600 mb-4">
+                    <ThemeIcon className="w-5 h-5" />
+                  </div>
+                  <h5 className="font-serif font-bold text-base text-ink mb-2">
+                    {theme.title}
+                  </h5>
+                  <p className="text-xs text-ink-muted leading-relaxed">
+                    {theme.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
       </div>

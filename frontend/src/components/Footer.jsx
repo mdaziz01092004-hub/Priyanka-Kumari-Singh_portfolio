@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ArrowUp, Heart } from 'lucide-react';
 
 const Footer = () => {
@@ -16,9 +17,9 @@ const Footer = () => {
           
           {/* Brand & Tagline */}
           <div className="text-center sm:text-left">
-            <div className="font-serif font-bold text-xl tracking-wide text-white mb-1">
+            <Link to="/" className="block font-serif font-bold text-xl tracking-wide text-white mb-1 hover:text-literary-300 transition-colors">
               Priyanka Kumari Singh<span className="text-literary-400">.</span>
-            </div>
+            </Link>
             <p className="text-xs text-literary-300">
               B.A. English Student | Exploring Literature & Professional Opportunities
             </p>
