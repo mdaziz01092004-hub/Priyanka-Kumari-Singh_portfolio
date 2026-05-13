@@ -27,8 +27,12 @@ const Contact = () => {
     setStatus({ loading: true, success: false, error: null, message: '' });
 
     try {
-      // Make request directly to the local backend API server to ensure robust local submission
-      const response = await fetch('http://localhost:5000/api/contact', {
+      // Dynamically target local backend server or Vercel serverless web service routing
+      const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:5000/api/contact' 
+        : '/api/contact';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
