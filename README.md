@@ -55,3 +55,4 @@ npm run dev
 - **Premium Arts-tailored UI**: Glassmorphism badges, warm elegant color palettes, and literary-inspired typography.
 - **Dynamic Content Integration**: Comprehensive vertical education timeline and multi-language fluency indicators.
 - **Robust Inquiries Backend**: Complete feedback validation, persistent local database records, and anti-spam rate limiting.
+# priyankakumarisingh_portfolio
