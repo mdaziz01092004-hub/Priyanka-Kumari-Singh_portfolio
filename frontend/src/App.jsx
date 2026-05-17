@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import AboutEducation from './components/AboutEducation';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
+import TodoList from './components/TodoList';
 import Footer from './components/Footer';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/about" element={<AboutEducation />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/todo" element={<TodoList />} />
         </Routes>
       </main>
 
